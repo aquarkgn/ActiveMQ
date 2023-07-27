@@ -31,6 +31,7 @@ func (consumer *Consumer) SubscribeQueue(conn *stomp.Conn, queueName string) (*s
 // 消费队列消息
 func (consumer *Consumer) ConsumeQueueMessages(conn *stomp.Conn, sub *stomp.Subscription, wg *sync.WaitGroup) {
 	defer wg.Done()
+	log.Printf("启动消费者")
 
 	// 创建通道来处理消息
 	messages := make(chan *stomp.Message)
@@ -51,8 +52,6 @@ func (consumer *Consumer) ConsumeQueueMessages(conn *stomp.Conn, sub *stomp.Subs
 
 			// 模拟长时间处理任务
 			time.Sleep(1 * time.Second)
-
-			log.Printf("消息处理完成")
 		case <-time.After(5 * time.Second):
 			log.Printf("订阅超时，继续消费")
 

@@ -5,5 +5,5 @@ import (
 )
 
 func TestPublishMessage(t *testing.T) {
-
+	Publisher()
 }
