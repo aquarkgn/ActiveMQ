@@ -32,23 +32,6 @@ func (consumer *Consumer) SubscribeQueue(conn *stomp.Conn, queueName string) (*s
 func (consumer *Consumer) ConsumeQueueMessages(conn *stomp.Conn, sub *stomp.Subscription, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	// 设置定时器，达到超时时间后关闭订阅
-	timer := time.NewTimer(10 * time.Second)
-	// 持续读取消息
-	for {
-		select {
-		case msg := <-sub.C:
-			log.Printf("接收到消息：%s\n", string(msg.Body))
-		case <-timer.C:
-			log.Printf("订阅超时，关闭订阅")
-			err := sub.Unsubscribe()
-			if err != nil {
-				log.Fatal(err)
-			}
-			return
-		}
-	}
-
 	// 创建通道来处理消息
 	messages := make(chan *stomp.Message)
 
