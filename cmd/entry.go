@@ -43,5 +43,4 @@ func main() {
 	// 等待消费者 goroutine 完成
 	wg.Wait()
 	log.Printf("已关闭通道")
-
 }
