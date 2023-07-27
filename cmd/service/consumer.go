@@ -51,7 +51,7 @@ func (consumer *Consumer) ConsumeQueueMessages(conn *stomp.Conn, sub *stomp.Subs
 			log.Printf("接收到消息：%s\n", string(msg.Body))
 
 			// 模拟长时间处理任务
-			time.Sleep(1 * time.Second)
+			time.Sleep(2 * time.Second)
 		case <-time.After(5 * time.Second):
 			log.Printf("订阅超时，继续消费")
 
