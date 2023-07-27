@@ -14,8 +14,11 @@ type Consumer struct{}
 
 // 订阅队列
 func (consumer *Consumer) SubscribeQueue(conn *stomp.Conn, queueName string) (*stomp.Subscription, error) {
-	sub, err := conn.Subscribe(app.QueueName, stomp.AckAuto,
-		stomp.SubscribeOpt.Header("id", app.ConsumerName))
+	sub, err := conn.Subscribe(
+		app.QueueName,
+		stomp.AckAuto,
+		stomp.SubscribeOpt.Header("id", app.ConsumerName),
+	)
 	if err != nil {
 		return nil, err
 	}
