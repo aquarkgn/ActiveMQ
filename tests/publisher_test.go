@@ -1,15 +1,22 @@
-package service
+package tests
 
 import (
-	"activemq/internal/app"
 	"fmt"
-	"github.com/go-stomp/stomp"
 	"log"
 	"os"
 	"os/signal"
 	"sync"
+	"testing"
 	"time"
+
+	"activemq/internal/app"
+
+	"github.com/go-stomp/stomp"
 )
+
+func TestPublishMessage(t *testing.T) {
+	Publisher()
+}
 
 func Publisher() {
 	// 创建连接
