@@ -42,7 +42,6 @@ Loop:
 				}
 			}
 
-			fmt.Println(string(msg.Body))
 			log.Printf("接收到消息：%s\n", string(msg.Body))
 			err = client.Ack(msg)
 			if err != nil {

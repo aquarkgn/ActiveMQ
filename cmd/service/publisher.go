@@ -13,17 +13,17 @@ import (
 
 func Publisher() {
 	// 创建连接
-	// 创建连接
-	connOpts := []func(*stomp.Conn) error{
+	fmt.Println("启动ActiveMQ消费者...")
+	time.Sleep(5 * time.Second)
+
+	// Connect to broker
+	client, err := stomp.Dial("tcp", app.Url,
 		stomp.ConnOpt.Login(app.Username, app.Password),
-		stomp.ConnOpt.HeartBeat(12*time.Hour, 12*time.Hour), // 设置心跳检测间隔为10秒
+		stomp.ConnOpt.AcceptVersion(stomp.V12),
+		stomp.ConnOpt.HeartBeat(5*time.Second, 0*time.Second))
+	if err != nil {
+		fmt.Printf("连接到ActiveMQ失败, err: %v\n", err)
 	}
-	conn, err := stomp.Dial(
-		"tcp",
-		app.BrokerAddr,
-		connOpts...,
-	)
-	defer conn.Disconnect()
 
 	// 使用 WaitGroup 来等待消费者 goroutine 完成
 	var wg sync.WaitGroup
@@ -38,16 +38,16 @@ func Publisher() {
 		for {
 			// 发送消息
 			msg := fmt.Sprintf("Number[ %d ] Hello, ActiveMQ Hong!", i)
-			err = conn.Send(
-				app.QueueName, // 发送到的队列名称
+			err = client.Send(
+				app.QueueTest, // 发送到的队列名称
 				"text/plain",
 				[]byte(msg), // 消息内容
 				nil,
 			)
 			if err != nil {
-				log.Printf("消息发送失败 %s %s %s", app.QueueName, msg, err.Error())
+				log.Printf("消息发送失败 %s %s %s", app.QueueTest, msg, err.Error())
 			} else {
-				log.Printf("消息发送成功 %s %s", app.QueueName, msg)
+				log.Printf("消息发送成功 %s %s", app.QueueTest, msg)
 			}
 
 			// 延迟一段时间再发送下一条消息

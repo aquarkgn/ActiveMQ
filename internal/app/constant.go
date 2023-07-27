@@ -1,10 +1,14 @@
 package app
 
 const (
-	BrokerAddr   = "localhost:61613" // ActiveMQ的连接地址和端口
-	QueueName    = "example_queue"   // 队列名称
-	ConsumerName = "Consumer-Hong"   // 消费者名称
+	Url = "localhost:61613" // ActiveMQ的连接地址和端口
 
 	Username = "admin"
 	Password = "admin"
+
+	ConsumerName = "Consumer-Hong" // 消费者名称
+
+	QueueName = "example_queue" // 队列名称1
+
+	QueueTest = "/queue/test" // 队列名称2
 )
