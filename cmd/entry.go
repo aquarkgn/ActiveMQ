@@ -12,7 +12,10 @@ import (
 
 func main() {
 	// 创建连接
-	conn, err := stomp.Dial("tcp", app.BrokerAddr)
+	conn, err := stomp.Dial(
+		"tcp",
+		app.BrokerAddr,
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +35,7 @@ func main() {
 	// 启动消费者
 	wg.Add(1)
 	log.Printf("正在启动消费者")
-	go service.ConsumerInstance.ConsumeQueueMessages(subQueue, &wg)
+	go service.ConsumerInstance.ConsumeQueueMessages(conn, subQueue, &wg)
 
 	// 等待中断信号，优雅地关闭连接
 	log.Printf("按 CTRL+C 退出")
