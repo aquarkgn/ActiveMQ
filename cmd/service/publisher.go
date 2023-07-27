@@ -14,7 +14,7 @@ import (
 func Publisher() {
 	// 创建连接
 	fmt.Println("启动ActiveMQ消费者...")
-	time.Sleep(5 * time.Second)
+	time.Sleep(1 * time.Second)
 
 	// Connect to broker
 	client, err := stomp.Dial("tcp", app.Url,
@@ -65,5 +65,4 @@ func Publisher() {
 	// 等待消费者 goroutine 完成
 	wg.Wait()
 	log.Printf("已关闭通道")
-
 }
