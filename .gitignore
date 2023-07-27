@@ -15,7 +15,17 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 # Go workspace file
 go.work
+
+
+# End of https://www.toptal.com/developers/gitignore/api/go
+/deployment/docker-compose/data
+
+# idea
+.idea
+*.iml
+.history
+.vscode
