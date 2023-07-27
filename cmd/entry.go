@@ -8,13 +8,19 @@ import (
 	"os"
 	"os/signal"
 	"sync"
+	"time"
 )
 
 func main() {
 	// 创建连接
+	connOpts := []func(*stomp.Conn) error{
+		stomp.ConnOpt.Login(app.Username, app.Password),
+		stomp.ConnOpt.HeartBeat(10*time.Second, 10*time.Second), // 设置心跳检测间隔为10秒
+	}
 	conn, err := stomp.Dial(
 		"tcp",
 		app.BrokerAddr,
+		connOpts...,
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -35,7 +41,7 @@ func main() {
 	// 启动消费者
 	wg.Add(1)
 	log.Printf("正在启动消费者")
-	go service.ConsumerInstance.ConsumeQueueMessages(conn, subQueue, &wg)
+	service.ConsumerInstance.ConsumeQueueMessages(conn, subQueue, &wg)
 
 	// 等待中断信号，优雅地关闭连接
 	log.Printf("按 CTRL+C 退出")
