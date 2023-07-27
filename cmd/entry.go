@@ -42,12 +42,14 @@ Loop:
 				}
 			}
 
-			log.Printf("接收到消息：%s\n", string(msg.Body))
+			log.Printf("收到消息: %s", string(msg.Body))
 			err = client.Ack(msg)
 			if err != nil {
 				fmt.Printf("ACK失败, err: %v\n", err)
 				break
 			}
+
+			time.Sleep(2 * time.Second)
 		}
 	}
 }
