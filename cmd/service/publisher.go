@@ -13,10 +13,16 @@ import (
 
 func Publisher() {
 	// 创建连接
-	conn, err := stomp.Dial("tcp", app.BrokerAddr)
-	if err != nil {
-		log.Fatal(err)
+	// 创建连接
+	connOpts := []func(*stomp.Conn) error{
+		stomp.ConnOpt.Login(app.Username, app.Password),
+		stomp.ConnOpt.HeartBeat(12*time.Hour, 12*time.Hour), // 设置心跳检测间隔为10秒
 	}
+	conn, err := stomp.Dial(
+		"tcp",
+		app.BrokerAddr,
+		connOpts...,
+	)
 	defer conn.Disconnect()
 
 	// 使用 WaitGroup 来等待消费者 goroutine 完成
