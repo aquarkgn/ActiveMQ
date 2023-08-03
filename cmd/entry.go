@@ -30,6 +30,12 @@ Loop:
 			continue Loop
 		}
 
+		topicSub, err := client.Subscribe(app.TopicTest, stomp.AckClient, stomp.SubscribeOpt.Header("id", app.ConsumerName2))
+		if err != nil {
+			fmt.Printf("订阅Topic失败, err: %v\n", err)
+			continue Loop
+		}
+
 		fmt.Println("已启动ActiveMQ消费者, 正在等待消息...")
 		for {
 			msg := <-sub.C
@@ -49,7 +55,39 @@ Loop:
 				break
 			}
 
+			topicMsg := <-topicSub.C
+			if msg.Err != nil {
+				fmt.Printf("接收消息失败, err: %v\n", topicMsg.Err)
+				err = client.Nack(topicMsg)
+				if err != nil {
+					fmt.Printf("NACK失败, err: %v\n", err)
+					break
+				}
+			}
+
+			log.Printf("收到消息: %s", string(topicMsg.Body))
+			err = client.Ack(topicMsg)
+			if err != nil {
+				fmt.Printf("ACK失败, err: %v\n", err)
+				break
+			}
+
 			time.Sleep(2 * time.Second)
+			//topicMsg := <-topicSub.C
+			//	if topicMsg.Err != nil {
+			//		fmt.Printf("接收消息失败, err: %v\n", topicMsg.Err)
+			//		err = client.Nack(topicMsg)
+			//		if err != nil {
+			//			fmt.Printf("NACK失败, err: %v\n", err)
+			//			break
+			//		}
+			//		log.Printf("收到消息: %s", string(topicMsg.Body))
+			//		err = client.Ack(topicMsg)
+			//		if err != nil {
+			//			fmt.Printf("ACK失败, err: %v\n", err)
+			//			break
+			//		}
+			//		time.Sleep(2 * time.Second)
 		}
 	}
 }

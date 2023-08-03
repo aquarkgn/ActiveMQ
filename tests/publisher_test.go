@@ -51,10 +51,25 @@ func Publisher() {
 				[]byte(msg), // 消息内容
 				nil,
 			)
+
 			if err != nil {
-				log.Printf("消息发送失败 %s %s %s", app.QueueTest, msg, err.Error())
+				log.Printf("发送队列失败 %s %s %s", app.QueueTest, msg, err.Error())
 			} else {
-				log.Printf("消息发送成功 %s %s", app.QueueTest, msg)
+				log.Printf("发送队列成功 %s %s", app.QueueTest, msg)
+			}
+
+			topicMsg := fmt.Sprintf("Number[ %d ] Pulisher TopicMsg", i)
+			err = client.Send(
+				app.TopicTest, // 发送到的队列名称
+				"text/plain",
+				[]byte(topicMsg), // 消息内容
+				nil,
+			)
+
+			if err != nil {
+				log.Printf("发送topic失败 %s %s %s", app.TopicTest, topicMsg, err.Error())
+			} else {
+				log.Printf("发送topic成功 %s %s", app.TopicTest, topicMsg)
 			}
 
 			// 延迟一段时间再发送下一条消息

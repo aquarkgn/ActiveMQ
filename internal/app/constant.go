@@ -8,7 +8,10 @@ const (
 
 	ConsumerName = "Consumer-Hong" // 消费者名称
 
+	ConsumerName2 = "Consumer-Topic" // 消费者名称2
+
 	QueueName = "example_queue" // 队列名称1
 
-	QueueTest = "/queue/test" // 队列名称2
+	QueueTest = "/queue/test"      // 队列名称2
+	TopicTest = "/topic/topic_one" // topic名称1
 )
