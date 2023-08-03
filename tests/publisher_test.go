@@ -58,7 +58,7 @@ func Publisher() {
 				log.Printf("发送队列成功 %s %s", app.QueueTest, msg)
 			}
 
-			topicMsg := fmt.Sprintf("Number[ %d ] Pulisher TopicMsg", i)
+			topicMsg := fmt.Sprintf("Number[ %d ] Hello, TopicMsg", i)
 			err = client.Send(
 				app.TopicTest, // 发送到的队列名称
 				"text/plain",

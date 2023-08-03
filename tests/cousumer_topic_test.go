@@ -4,6 +4,7 @@ import (
 	"activemq/internal/app"
 	"fmt"
 	"github.com/go-stomp/stomp"
+	"log"
 	"testing"
 	"time"
 )
@@ -23,6 +24,21 @@ func TestActiveMQ(t *testing.T) {
 
 	for {
 		msg := <-sub.C
+		if msg.Err != nil {
+			fmt.Printf("接收消息失败, err: %v\n", msg.Err)
+			err = conn.Nack(msg)
+			if err != nil {
+				fmt.Printf("NACK失败, err: %v\n", err)
+				break
+			}
+		}
+
+		log.Printf("收到消息: %s", string(msg.Body))
+		err = conn.Ack(msg)
+		if err != nil {
+			fmt.Printf("ACK失败, err: %v\n", err)
+			break
+		}
 		fmt.Sprintf("Received incorrect message.  Actual: %s", msg.Body)
 		time.Sleep(2 * time.Second)
 	}
